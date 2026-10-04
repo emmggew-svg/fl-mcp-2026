@@ -2,12 +2,12 @@
 
 **Control FL Studio with Claude: AI mixing, composition, and mix diagnosis through natural language.**
 
-![version](https://img.shields.io/badge/version-1.0.0-blue)
+![version](https://img.shields.io/badge/version-1.1.0-blue)
 ![status](https://img.shields.io/badge/status-beta-yellow)
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![python](https://img.shields.io/badge/python-3.10+-blue)
 ![platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue)
-![FL Studio](https://img.shields.io/badge/FL%20Studio-2025%2B-orange)
+![FL Studio](https://img.shields.io/badge/FL%20Studio-2025--2026-orange)
 
 ![Claude diagnosing and fixing a mix in FL Studio](docs/demo.gif)
 
@@ -15,7 +15,7 @@
 
 ## Overview
 
-flstudio-mcp is a Model Context Protocol (MCP) server that lets Claude Desktop drive FL Studio 2025 directly — the mixer, plugins, piano roll, routing, and project — from plain-language requests. Ask for a mix diagnosis, a vocal chain, a chord progression in a particular scale, or a full arrangement, and Claude carries it out through FL's scripting API and a set of calibrated, safety-checked tools.
+flstudio-mcp is a Model Context Protocol (MCP) server that lets Claude Desktop drive FL Studio 2025 and 2026 directly — the mixer, plugins, piano roll, routing, and project — from plain-language requests. Ask for a mix diagnosis, a vocal chain, a chord progression in a particular scale, or a full arrangement, and Claude carries it out through FL's scripting API and a set of calibrated, safety-checked tools.
 
 It is genre- and producer-agnostic: nothing about it assumes a particular style of music.
 
@@ -179,6 +179,8 @@ Verify the connection by asking Claude to call `fl_ping`.
 | Claude can't reach FL / `fl_ping` fails | Make sure the daemon is running (`fl-studio-mcp-daemon`); check the transport matches (`FLSTUDIO_MCP_TRANSPORT=tcp` uses the daemon, unset uses direct MIDI); restart Claude Desktop after editing its config. |
 | Note-writing does nothing | Run `MCP_Apply` once from the piano roll's scripting menu this session — it arms the note bridge. |
 | macOS note-trigger fails | Grant Accessibility permission to the app running the MCP server or daemon, then click the FL Piano roll and try `Cmd+Opt+Y`. |
+| Plugin list empty on a fresh FL 2026 install | Stock FL 2026 has no `Plugin database/Installed/` folder yet (only `Installed.nfo`). The server now falls back to the stock `Plugin database/` tree; scan third-party plugins in FL's Plugin Manager to populate `Installed/`. |
+| Installer used the wrong FL folder (OneDrive / localized Documents) | The installer scans Documents, OneDrive Documents/Belgeler newest-first. Override with `FL_SETTINGS` env var (Windows) or `FL_HARDWARE_OVERRIDE` (macOS). |
 | Audio tools error or are unavailable | Install the optional extras: `pip install -e ".[audio]"` (or `".[audio,audio-accurate]"`). |
 
 ## Usage examples
@@ -204,6 +206,6 @@ MIT — see [LICENSE](LICENSE).
 
 ## Status & contributing
 
-Beta — the public 1.0 release. Windows and macOS are supported; Linux contributions are welcome. Issues and pull requests: [github.com/rosasynthesiz/flstudio-mcp](https://github.com/rosasynthesiz/flstudio-mcp).
+1.1.0 adds FL Studio 2026 support (backward compatible with 2025). Windows and macOS are supported; Linux contributions are welcome. Issues and pull requests: [github.com/rosasynthesiz/flstudio-mcp](https://github.com/rosasynthesiz/flstudio-mcp).
 
 <!-- mcp-name: io.github.rosasynthesiz/flstudio-mcp -->

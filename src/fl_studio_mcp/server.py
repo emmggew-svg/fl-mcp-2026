@@ -58,6 +58,8 @@ REQUIREMENTS
      (Audio MIDI Setup). Linux: use snd-virmidi.
   3. The FLStudioMCP controller script must be installed under
      Documents/Image-Line/FL Studio/Settings/Hardware/FLStudioMCP/
+     (or the OneDrive/localized equivalent -- the installer finds it).
+     Documents/Image-Line/FL Studio/Settings/Hardware/FLStudioMCP/
   4. In FL Studio: Options > MIDI Settings,
        - Enable 'FLStudioMCP RX' in the Input list, set Controller type to
          FLStudioMCP, give it a Port number (any value, e.g. 42).

@@ -1,7 +1,7 @@
 # Contributing to flstudio-mcp
 
 Thanks for your interest in improving flstudio-mcp. This project is a Model
-Context Protocol server that lets Claude drive FL Studio 2025 — mixer, plugins,
+Context Protocol server that lets Claude drive FL Studio 2025/2026 — mixer, plugins,
 piano roll, routing, and project — through calibrated, safety-checked tools.
 Contributions of all kinds are welcome: bug reports, fixes, new tools, docs,
 and platform support.
@@ -27,7 +27,7 @@ A PR that tries to "fix" one of these by working around the sandbox will likely 
 
 You'll need the same environment as a user, plus an editable install:
 
-- Windows 10/11 or macOS, FL Studio 2025+, Python 3.12
+- Windows 10/11 or macOS, FL Studio 2025/2026 (26.1.7 recommended), Python 3.10+
 - loopMIDI on Windows or IAC Driver on macOS, with two ports named exactly
   FLStudioMCP RX and FLStudioMCP TX
 - Claude Desktop (or any MCP client) for end-to-end testing
@@ -67,7 +67,7 @@ Every tool that modifies the project must route through the snapshot → write �
 
 A good report includes:
 
-- FL Studio edition and build (e.g. Producer Edition v25.2.5 [build 5319])
+- FL Studio edition and build (e.g. Producer Edition v26.1.7 [build 5653])
 - What you asked Claude to do, and what happened vs. what you expected
 - Relevant FL Script output and server/daemon logs
 - Whether fl_ping succeeds
