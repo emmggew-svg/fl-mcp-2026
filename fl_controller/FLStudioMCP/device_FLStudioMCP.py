@@ -88,6 +88,7 @@ HEARTBEAT_INTERVAL = 0.5  # seconds between heartbeats
 
 _last_heartbeat = 0.0
 _fl_version = "unknown"
+_api_version = None
 
 # `device.midiOutSysex` is what we want; some old builds expose
 # `midiOutSysEx` (capital E). Resolve at OnInit.
@@ -99,11 +100,15 @@ _send_sysex_fn = None
 # ---------------------------------------------------------------------------
 
 def OnInit():
-    global _fl_version, _send_sysex_fn
+    global _fl_version, _api_version, _send_sysex_fn
     try:
         _fl_version = ui.getVersion()
     except Exception:
         _fl_version = "unknown"
+    try:
+        _api_version = int(general.getVersion())
+    except Exception:
+        _api_version = None
 
     # Resolve the SysEx-out function name across FL builds.
     _send_sysex_fn = getattr(device, "midiOutSysex", None)
@@ -261,6 +266,7 @@ def _emit_heartbeat():
         {
             "v": PROTOCOL_VERSION,
             "fl_version": _fl_version,
+            "api_version": _api_version,
             "ts": time.time(),
         },
     )
@@ -289,6 +295,7 @@ def _dispatch(command, params):
 def _h_ping(params):
     return {
         "fl_version": _fl_version,
+        "api_version": _api_version,
         "protocol_version": PROTOCOL_VERSION,
         "build": "color-v14",   # reload marker -- bump to verify reloads take
         "ts": time.time(),
@@ -936,6 +943,29 @@ def _h_api_probe(p):
     return {"error": "unknown op: %s" % op}
 
 
+def _h_get_capabilities(params):
+    """FL 2026 port: report API version + hasattr probe for 2026-only entry points."""
+    def _has(mod, name):
+        try:
+            return bool(hasattr(mod, name))
+        except Exception:
+            return False
+    return {
+        "fl_version": _fl_version,
+        "api_version": _api_version,
+        "probe": {
+            "set_pattern_length": _has(patterns, "setPatternLength"),
+            "increment_pattern_length": _has(patterns, "incrementPatternLength"),
+            "move_pattern": _has(patterns, "movePattern"),
+            "clear_pattern": _has(patterns, "clearPattern"),
+            "clone_dest": True,  # signature probed at call time (see clone handler)
+            "show_picker": _has(ui, "showPicker"),
+            "swing": _has(channels, "getSwing") and _has(channels, "setSwing"),
+            "duplicate_pattern_data": _has(patterns, "duplicatePatternData"),
+        },
+    }
+
+
 # -- Arrangement primitives (Slice 1): pattern create/clone + markers --------
 
 def _h_pattern_list(p):
@@ -977,12 +1007,22 @@ def _h_arrange_clone_pattern(p):
     patterns.jumpToPattern(src)
     before = patterns.patternCount()
     try:
-        patterns.clonePattern(src)
+        dest = int(p.get("dest", -1))
     except Exception:
+        dest = -1
+    if dest >= 0:
         try:
-            patterns.clonePattern()
-        except Exception as e:
-            return {"ok": False, "error": "clonePattern: %s" % e}
+            patterns.clonePattern(src, dest)
+        except TypeError:
+            patterns.clonePattern(src)  # 2025 builds: no destIndex
+    else:
+        try:
+            patterns.clonePattern(src)
+        except Exception:
+            try:
+                patterns.clonePattern()
+            except Exception as e:
+                return {"ok": False, "error": "clonePattern: %s" % e}
     new_idx = patterns.patternNumber()
     after = patterns.patternCount()
     try:
@@ -1099,5 +1139,6 @@ _HANDLERS = {
     "arrange_add_marker": _h_arrange_add_marker,
     "channel_select": _h_channel_select,
     "ensure_piano_roll": _h_ensure_piano_roll,
+    "get_capabilities": _h_get_capabilities,
     "pattern_list": _h_pattern_list,
 }

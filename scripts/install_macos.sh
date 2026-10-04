@@ -4,7 +4,17 @@
 # ============================================================================
 set -euo pipefail
 
-FL_HARDWARE="$HOME/Documents/Image-Line/FL Studio/Settings/Hardware"
+if [ -n "${FL_HARDWARE_OVERRIDE:-}" ]; then
+  FL_HARDWARE="$FL_HARDWARE_OVERRIDE"
+else
+  FL_HARDWARE=""
+  for root in "$HOME/Documents/Image-Line" "$HOME/OneDrive/Documents/Image-Line"; do
+    for d in "$root"/FL\ Studio*; do
+      if [ -d "$d/Settings/Hardware" ]; then FL_HARDWARE="$d/Settings/Hardware"; break 2; fi
+    done
+  done
+  : "${FL_HARDWARE:=$HOME/Documents/Image-Line/FL Studio/Settings/Hardware}"
+fi
 TARGET="$FL_HARDWARE/FLStudioMCP"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"

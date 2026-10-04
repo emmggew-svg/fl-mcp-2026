@@ -6,13 +6,20 @@ REM    [2] MCP server          -> pip install -e .
 REM    [3] note-bridge script  -> seeds MCP_Apply.pyscript in Piano roll scripts\
 REM    [4] loopMIDI port check
 REM
-REM  Assumes the standard FL 2025 user-data location:
-REM    %USERPROFILE%\Documents\Image-Line\FL Studio\Settings
-REM  If your FL data folder is elsewhere, edit FL_SETTINGS below.
+REM  Supports FL Studio 2025 and 2026 user-data locations, including
+REM  OneDrive-redirected and localized Documents folders (e.g. Belgeler).
+REM  Override: set FL_SETTINGS env var before running.
 REM ============================================================================
 setlocal enabledelayedexpansion
 
+if defined FL_SETTINGS goto :have_settings
+for %%R in ("%USERPROFILE%\Documents\Image-Line" "%USERPROFILE%\OneDrive\Documents\Image-Line" "%USERPROFILE%\OneDrive\Belgeler\Image-Line" "%USERPROFILE%\Belgeler\Image-Line") do (
+  for /D %%F in (%%~R\FL Studio*) do (
+    if exist "%%F\Settings\Hardware" set "FL_SETTINGS=%%F\Settings" & goto :have_settings
+  )
+)
 set "FL_SETTINGS=%USERPROFILE%\Documents\Image-Line\FL Studio\Settings"
+:have_settings
 set "HW_TARGET=%FL_SETTINGS%\Hardware\FLStudioMCP"
 set "SCRIPT_DIR=%~dp0"
 set "REPO_ROOT=%SCRIPT_DIR%.."

@@ -140,6 +140,17 @@ so it ships inside the wheel.
 - [ ] GitHub Actions for linting and the standalone bridge tests (mock FL).
 - [ ] Pin a known-working FL Studio version range in README.
 
+## FL 2026 proposals (not built -- approve before coding)
+
+- `fl_pattern_set_length` / `fl_pattern_clear` (wraps `setPatternLength` /
+  `clearPattern`, gated on `has_set_pattern_length` / `has_clear_pattern`).
+- `fl_pattern_clone_to` (clone into a chosen destination, gated on
+  `has_clone_dest`; keeps `fl_arrange_clone_pattern` schema untouched).
+- `fl_show_plugin_picker` (wraps `ui.showPicker` / `OpenPluginPicker=67`,
+  gated on `has_show_picker`).
+- `fl_get_swing` / `fl_set_swing` (gated on `has_swing`; version undocumented,
+  probe-only).
+
 ## Out of scope (intentionally)
 
 - Loading new VST instances — FL API does not allow this.

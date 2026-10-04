@@ -82,7 +82,7 @@ These are properties of FL Studio's scripting API, stated plainly:
 ## Requirements
 
 - **Windows 10/11** (tested on Windows 11) or **macOS**
-- **FL Studio 2025** or newer
+- **FL Studio 2025 and 2026** (26.1.7 recommended; older 2026 builds work with reduced features)
 - **Claude Desktop** (or any MCP client)
 - **Python 3.10+**
 - Virtual MIDI ports:

@@ -11,7 +11,8 @@ these via the API; this is for library-aware SUGGESTIONS.)
 from __future__ import annotations
 
 import os
-from pathlib import Path
+
+from ..paths import plugin_db_installed_dir, plugin_db_root
 
 _ENV = "FLSTUDIO_MCP_PLUGIN_DB"     # override: full path to the 'Installed' folder
 
@@ -35,20 +36,16 @@ _ROLE_KW = {
 
 
 def find_plugin_db():
-    """Locate FL's 'Installed' plugin-db folder: env override, else discover under
-    the user's Documents (handles versioned 'FL Studio NN' folders)."""
-    env = os.environ.get(_ENV)
-    if env and os.path.isdir(env):
-        return env
-    home = Path.home()
-    for r in (home / "Documents" / "Image-Line", home / "Image-Line"):
-        if not r.is_dir():
-            continue
-        for fl in sorted(r.glob("FL Studio*"), reverse=True):
-            p = fl / "Presets" / "Plugin database" / "Installed"
-            if p.is_dir():
-                return str(p)
-    return None
+    """Locate FL's plugin database.
+
+    Prefers ``.../Plugin database/Installed`` (third-party scans, FL 2025
+    layout). Falls back to the stock ``.../Plugin database`` tree (FL 2026
+    fresh installs have no ``Installed/`` yet -- only ``Installed.nfo``).
+    Handles OneDrive-redirected and localized Documents folders."""
+    found = plugin_db_installed_dir()
+    if found:
+        return found
+    return plugin_db_root()
 
 
 def _names(folder):

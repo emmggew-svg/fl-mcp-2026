@@ -16,9 +16,11 @@ from __future__ import annotations
 
 import os
 
+from .paths import piano_roll_scripts_dir as _resolve_scripts_dir
+
 PIANO_ROLL_SCRIPTS_DIR = os.path.expanduser(
     "~/Documents/Image-Line/FL Studio/Settings/Piano roll scripts"
-)
+)  # legacy default; use resolve_scripts_dir() at runtime
 APPLY_SCRIPT_NAME = "MCP_Apply.pyscript"
 
 _DEFAULT_VELOCITY = 100 / 127.0
@@ -82,12 +84,19 @@ def render_apply_script(notes, mode="replace"):
     return _TEMPLATE.format(mode=mode, notes=tuples)
 
 
+def resolve_scripts_dir(scripts_dir=None):
+    """Robust Piano-roll scripts dir (OneDrive/TR-locale safe, FL 2026 ok)."""
+    if scripts_dir:
+        return scripts_dir
+    return _resolve_scripts_dir() or PIANO_ROLL_SCRIPTS_DIR
+
+
 def write_apply_script(notes, mode="replace", scripts_dir=None):
     """Write the generated apply-script into FL's Piano roll scripts folder.
 
     Returns the path written.
     """
-    scripts_dir = scripts_dir or PIANO_ROLL_SCRIPTS_DIR
+    scripts_dir = resolve_scripts_dir(scripts_dir)
     text = render_apply_script(notes, mode)
     path = os.path.join(scripts_dir, APPLY_SCRIPT_NAME)
     with open(path, "w", encoding="ascii") as f:
@@ -175,7 +184,7 @@ def render_quantize_script(grid_bars, snap_ends=False):
 
 def write_quantize_script(grid_bars, snap_ends=False, scripts_dir=None):
     """Write the quantize-existing-notes script to MCP_Apply.pyscript. Returns path."""
-    scripts_dir = scripts_dir or PIANO_ROLL_SCRIPTS_DIR
+    scripts_dir = resolve_scripts_dir(scripts_dir)
     text = render_quantize_script(grid_bars, snap_ends)
     path = os.path.join(scripts_dir, APPLY_SCRIPT_NAME)
     with open(path, "w", encoding="ascii") as f:

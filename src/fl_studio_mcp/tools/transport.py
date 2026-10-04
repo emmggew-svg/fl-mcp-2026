@@ -60,11 +60,15 @@ def register(mcp: FastMCP) -> None:
             }
         # Round-trip a ping so we also confirm the request path is healthy.
         data = bridge.call(protocol.CMD_PING)
+        # Best-effort capability probe (FL 2026 port). Old controllers
+        # answer unknown_command -- fall back to version-threshold flags.
+        capabilities = _get_capabilities_best_effort(bridge, data)
         return {
             "alive": True,
             "heartbeat_age_seconds": round(age, 2),
             **port_info,
             **data,
+            "capabilities": capabilities,
         }
 
     @mcp.tool(
@@ -186,6 +190,32 @@ def register(mcp: FastMCP) -> None:
     ) -> dict:
         """Move the playhead to the given beat position."""
         return _safe_call(protocol.CMD_SET_SONG_POS, {"beats": float(beats)})
+
+
+def _get_capabilities_best_effort(bridge, ping_data: dict) -> dict:
+    from ..capabilities import describe, flags_from_api_version, merge_probe
+
+    api_version = ping_data.get("api_version")
+    fl_version = str(ping_data.get("fl_version", "unknown"))
+    try:
+        api_int = int(api_version) if api_version is not None else None
+    except (TypeError, ValueError):
+        api_int = None
+    base = flags_from_api_version(api_int, fl_version)
+    try:
+        probe_resp = bridge.call(protocol.CMD_GET_CAPABILITIES, {}, timeout=5.0)
+    except Exception:
+        return describe(base)  # old controller or timeout: version fallback
+    if isinstance(probe_resp, dict) and probe_resp.get("api_version") is not None:
+        try:
+            api_int = int(probe_resp["api_version"])
+            base = flags_from_api_version(
+                api_int, str(probe_resp.get("fl_version", fl_version))
+            )
+        except (TypeError, ValueError):
+            pass
+    probe = probe_resp.get("probe") if isinstance(probe_resp, dict) else None
+    return describe(merge_probe(base, probe, fl_version))
 
 
 def _safe_call(command: str, params: dict | None = None):

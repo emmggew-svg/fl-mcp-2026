@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.1.0 -- FL Studio 2026 support (backward compatible)
+
+Additive port to FL Studio 2026 (verified against 26.1.7.5653).
+No tool renamed, removed, or re-schematized (67 tools intact).
+
+- `capabilities.py` (new): single version-logic module. Probe-first
+  (`general.getVersion()` + `hasattr`), API-version thresholds as fallback,
+  2025 baseline when unknown.
+- Controller: reports `api_version` in `ping`/heartbeat; new
+  `get_capabilities` probe; `clonePattern(src, dest)` tried first with
+  legacy fallback.
+- `paths.py` (new): OneDrive + localized-Documents-safe user-data
+  discovery; `plugin_library` falls back to the stock `Plugin database/`
+  tree when `Installed/` is absent (stock FL 2026); installers scan
+  newest-first with env overrides.
+- `fl_ping` gains an additive `capabilities` report (best-effort).
+
+
 ## v0.2.0 -- MIDI SysEx transport
 
 **Breaking change**: the transport between the MCP server and the FL
