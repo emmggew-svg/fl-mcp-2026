@@ -1,5 +1,5 @@
 # name=FLStudioMCP
-# url=https://github.com/rosasynthesiz/flstudio-mcp
+# url=https://github.com/emmggew-svg/fl-mcp-2026
 # receiveFrom=
 # supportedDevices=
 """FLStudioMCP controller script -- v0.2 MIDI-only transport.

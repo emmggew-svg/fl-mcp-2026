@@ -1,4 +1,6 @@
-# flstudio-mcp
+# fl-mcp-2026
+
+> FL Studio 2026 port of [rosasynthesiz/flstudio-mcp](https://github.com/rosasynthesiz/flstudio-mcp) (MIT). Backward compatible with FL Studio 2025.
 
 **Control FL Studio with Claude: AI mixing, composition, and mix diagnosis through natural language.**
 
@@ -15,7 +17,7 @@
 
 ## Overview
 
-flstudio-mcp is a Model Context Protocol (MCP) server that lets Claude Desktop drive FL Studio 2025 and 2026 directly — the mixer, plugins, piano roll, routing, and project — from plain-language requests. Ask for a mix diagnosis, a vocal chain, a chord progression in a particular scale, or a full arrangement, and Claude carries it out through FL's scripting API and a set of calibrated, safety-checked tools.
+fl-mcp-2026 is a Model Context Protocol (MCP) server that lets Claude Desktop drive FL Studio 2025 and 2026 directly — the mixer, plugins, piano roll, routing, and project — from plain-language requests. Ask for a mix diagnosis, a vocal chain, a chord progression in a particular scale, or a full arrangement, and Claude carries it out through FL's scripting API and a set of calibrated, safety-checked tools.
 
 It is genre- and producer-agnostic: nothing about it assumes a particular style of music.
 
@@ -69,7 +71,7 @@ The server exposes 67 tools across 14 categories, plus 6 live resources (project
 
 ## What sets it apart
 
-flstudio-mcp is built as a mixing and production assistant, not only a note sender. It diagnoses and repairs a whole mix, makes decisions from real measured levels rather than guesswork, and is aware of your actual plugin and preset library when it makes suggestions. Every change that touches the project is shown before it is applied, logged, and reversible.
+fl-mcp-2026 is built as a mixing and production assistant, not only a note sender. It diagnoses and repairs a whole mix, makes decisions from real measured levels rather than guesswork, and is aware of your actual plugin and preset library when it makes suggestions. Every change that touches the project is shown before it is applied, logged, and reversible.
 
 ## Limitations
 
@@ -112,15 +114,15 @@ Linux is not yet supported — contributions welcome.
 
    Windows:
    ```bat
-   git clone https://github.com/rosasynthesiz/flstudio-mcp
-   cd flstudio-mcp
+   git clone https://github.com/emmggew-svg/fl-mcp-2026
+   cd fl-mcp-2026
    scripts\install_windows.bat
    ```
 
    macOS:
    ```bash
-   git clone https://github.com/rosasynthesiz/flstudio-mcp
-   cd flstudio-mcp
+   git clone https://github.com/emmggew-svg/fl-mcp-2026
+   cd fl-mcp-2026
    chmod +x scripts/install_macos.sh
    ./scripts/install_macos.sh
    ```
@@ -206,6 +208,6 @@ MIT — see [LICENSE](LICENSE).
 
 ## Status & contributing
 
-1.1.0 adds FL Studio 2026 support (backward compatible with 2025). Windows and macOS are supported; Linux contributions are welcome. Issues and pull requests: [github.com/rosasynthesiz/flstudio-mcp](https://github.com/rosasynthesiz/flstudio-mcp).
+1.1.0 adds FL Studio 2026 support (backward compatible with 2025). Windows and macOS are supported; Linux contributions are welcome. Issues and pull requests: [github.com/emmggew-svg/fl-mcp-2026](https://github.com/emmggew-svg/fl-mcp-2026).
 
-<!-- mcp-name: io.github.rosasynthesiz/flstudio-mcp -->
+<!-- mcp-name: io.github.emmggew-svg/fl-mcp-2026 -->

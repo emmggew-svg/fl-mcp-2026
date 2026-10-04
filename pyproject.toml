@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "fl-studio-mcp"
+name = "fl-mcp-2026"
 version = "1.1.0"
 description = "AI-powered FL Studio control via MCP - mixing, composition, plugin control, and mix diagnosis through natural language"
 readme = "README.md"
@@ -64,9 +64,9 @@ fl-studio-mcp = "fl_studio_mcp.server:main"
 fl-studio-mcp-daemon = "fl_studio_mcp.daemon:main"
 
 [project.urls]
-Homepage = "https://github.com/rosasynthesiz/flstudio-mcp"
-Repository = "https://github.com/rosasynthesiz/flstudio-mcp"
-Issues = "https://github.com/rosasynthesiz/flstudio-mcp/issues"
+Homepage = "https://github.com/emmggew-svg/fl-mcp-2026"
+Repository = "https://github.com/emmggew-svg/fl-mcp-2026"
+Issues = "https://github.com/emmggew-svg/fl-mcp-2026/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/fl_studio_mcp"]

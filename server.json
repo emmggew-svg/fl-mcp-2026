@@ -1,16 +1,16 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.rosasynthesiz/flstudio-mcp",
+  "name": "io.github.emmggew-svg/fl-mcp-2026",
   "description": "Control FL Studio with Claude: in-DAW mixing, diagnosis, routing, and composition.",
   "repository": {
-    "url": "https://github.com/rosasynthesiz/flstudio-mcp",
+    "url": "https://github.com/emmggew-svg/fl-mcp-2026",
     "source": "github"
   },
   "version": "1.1.0",
   "packages": [
     {
       "registryType": "pypi",
-      "identifier": "fl-studio-mcp",
+      "identifier": "fl-mcp-2026",
       "version": "1.0.0",
       "transport": {
         "type": "stdio"
